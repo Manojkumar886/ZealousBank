@@ -4,7 +4,8 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-import io.micrometer.common.lang.Nullable;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -29,7 +30,7 @@ import lombok.NoArgsConstructor;
 public class AccountEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "my_sequence_gen")
+    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "my_sequence_gen")
     @SequenceGenerator(name = "my_sequence_gen", sequenceName = "my_sequence", allocationSize = 1)
     private Long accountNumber;
     private String accountHoldername;
@@ -40,7 +41,9 @@ public class AccountEntity {
     @Column(name = "Place")
     private String accountHolderplace;
 
-    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonManagedReference
+    @JoinTable(name = "Connection", joinColumns = @JoinColumn(name = "accountNumber"), inverseJoinColumns = @JoinColumn(name = "transactionNumber"))
     private List<TransactionEntity> transactionlist = new ArrayList<>();
 
 }

@@ -3,6 +3,8 @@ package account_transaction.ZealousBank;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -28,14 +30,15 @@ public class TransactionEntity {
   @SequenceGenerator(name = "my_sequence_gen", sequenceName = "my_sequence", allocationSize = 1)
   private Long transactionNumber;
   private String transactionType;
-  private Double currentBalance;
-  private Double transactionAmount;
+  private BigDecimal currentBalance;
+  private BigDecimal transactionAmount;
   private String transactionHolderNumber;
   @Column(name = "transaction_date")
   private Date transactionDate;
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "accountNumber", nullable = false)
+  @JsonBackReference
   private AccountEntity account;
 
 }

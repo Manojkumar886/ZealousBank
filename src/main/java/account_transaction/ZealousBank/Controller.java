@@ -1,5 +1,6 @@
 package account_transaction.ZealousBank;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -62,13 +63,30 @@ public class Controller {
 
     @PostMapping("/createtransaction")
     public TransactionEntity transactioncreate(@RequestBody TransactionEntity transactiondetails) {
-        if (transactiondetails.getTransactionType().equals("credit")) {
+        transactiondetails.setCurrentBalance(transactiondetails.getAccount().getAccountBalance());
+
+        if (transactiondetails.getTransactionType().equalsIgnoreCase("credit")) {
             transactiondetails.setCurrentBalance(
-                    transactiondetails.getCurrentBalance() + transactiondetails.getTransactionAmount());
-        } else if (transactiondetails.getTransactionType().equals("debit")) {
-            if (transactiondetails.getCurrentBalance() >= transactiondetails.getTransactionAmount()) {
+                    transactiondetails.getCurrentBalance().add(transactiondetails.getTransactionAmount()));
+
+            BigDecimal currentBalance1 = transactiondetails.getCurrentBalance();
+
+            AccountEntity acc1 = service.findbyaccount(transactiondetails.getAccount().getAccountNumber());
+
+            acc1.setAccountBalance(currentBalance1);
+
+        } else if (transactiondetails.getTransactionType().equalsIgnoreCase("debit")) {
+            if (transactiondetails.getAccount().getAccountBalance()
+                    .compareTo(transactiondetails.getTransactionAmount()) > 0) {
                 transactiondetails.setCurrentBalance(
-                        transactiondetails.getCurrentBalance() - transactiondetails.getTransactionAmount());
+                        transactiondetails.getCurrentBalance().subtract(transactiondetails.getTransactionAmount()));
+
+                BigDecimal currentBalance1 = transactiondetails.getCurrentBalance();
+
+                AccountEntity acc1 = service.findbyaccount(transactiondetails.getAccount().getAccountNumber());
+
+                acc1.setAccountBalance(currentBalance1);
+
             }
         }
 
@@ -82,13 +100,8 @@ public class Controller {
     }
 
     @GetMapping("/transactionbyid/{id}")
-    public ResponseEntity<TransactionEntity> getTransactionById(@PathVariable Long id) {
-        Optional<TransactionEntity> transaction = tservice.findonetransaction(id);
-        if (transaction.isPresent()) {
-            return ResponseEntity.ok(transaction.get());
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+    public Optional<TransactionEntity> getTransactionById(@PathVariable long id) {
+        return tservice.findonetransaction(id);
     }
 
     // Delete a transaction
