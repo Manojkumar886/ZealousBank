@@ -26,8 +26,8 @@ import lombok.NoArgsConstructor;
 @Table(name = "transactiondetails")
 public class TransactionEntity {
   @Id
-  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "my_sequence_gen")
-  @SequenceGenerator(name = "my_sequence_gen", sequenceName = "my_sequence", allocationSize = 1)
+  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "my_sequence_gens")
+  @SequenceGenerator(name = "my_sequence_gens", sequenceName = "my_sequenceses", allocationSize = 1)
   private Long transactionNumber;
   private String transactionType;
   private BigDecimal currentBalance;

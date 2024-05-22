@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController
 public class Controller {
@@ -105,7 +104,7 @@ public class Controller {
     }
 
     // Delete a transaction
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/deletetransaction/{id}")
     public ResponseEntity<Void> deleteTransaction(@PathVariable Long id) {
         tservice.deleteTransaction(id);
         return ResponseEntity.noContent().build();
