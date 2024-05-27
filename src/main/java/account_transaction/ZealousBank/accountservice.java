@@ -3,10 +3,13 @@ package account_transaction.ZealousBank;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
-public class accountservice {
+public class accountservice implements UserDetailsService {
     @Autowired
     accountrepository repo;
 
@@ -32,6 +35,16 @@ public class accountservice {
 
     public List<AccountEntity> getallvaluesbyplace(String place) {
         return repo.findByAccountHolderplace(place);
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+
+        AccountEntity acc = repo.findByAccountHoldername(username);
+        if (acc == null) {
+            throw new UsernameNotFoundException(username);
+        }
+        return acc;
     }
 
 }

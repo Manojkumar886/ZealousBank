@@ -10,4 +10,6 @@ public interface accountrepository extends JpaRepository<AccountEntity, Long> {
 
     public List<AccountEntity> findByAccountHolderplace(String place);
 
+    public AccountEntity findByAccountHoldername(String username);
+
 }

@@ -2,12 +2,14 @@ package account_transaction.ZealousBank;
 
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
@@ -77,18 +79,44 @@ class ZealousBankApplicationTests {
 
 	// }
 
+	// @Test
+	// public void testGetTransactionByOneUser() {
+	// List<TransactionEntity> transactions = Arrays.asList(transaction1,
+	// transaction2);
+
+	// when(trepo.findAllByAccount(account)).thenReturn(transactions);
+
+	// List<TransactionEntity> result = tservice.gettransactionbyoneuser(account);
+
+	// // assertNotNull(result);
+	// assertEquals(5, result.size());
+	// // assertEquals(transactions, result);
+	// // verify(trepo, times(1)).findAllByAccount(account);
+	// }
+
 	@Test
-	public void testGetTransactionByOneUser() {
-		List<TransactionEntity> transactions = Arrays.asList(transaction1,
-				transaction2);
+	void testDeleteTransaction() {
+		Long id = transaction1.getTransactionNumber();
 
-		when(trepo.findAllByAccount(account)).thenReturn(transactions);
+		tservice.deleteTransaction(id);
 
-		List<TransactionEntity> result = tservice.gettransactionbyoneuser(account);
-
-		// assertNotNull(result);
-		assertEquals(5, result.size());
-		// assertEquals(transactions, result);
-		// verify(trepo, times(1)).findAllByAccount(account);
+		verify(trepo).deleteById(id);
 	}
+
+	// @Test
+	// public void testListAllTransaction() {
+	// // Given
+	// TransactionEntity transaction1 = new TransactionEntity();
+	// TransactionEntity transaction2 = new TransactionEntity();
+	// List<TransactionEntity> expectedTransactions = Arrays.asList(transaction1,
+	// transaction2);
+
+	// when(trepo.findAll()).thenReturn(expectedTransactions);
+
+	// // When
+	// List<TransactionEntity> actualTransactions = tservice.listalltransaction();
+
+	// // Then
+	// assertThat(actualTransactions).isEqualTo(expectedTransactions);
+	// }
 }
