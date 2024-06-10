@@ -46,7 +46,7 @@ public class AccountEntity implements UserDetails {
     private String accountHolderplace;
     private String password;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     @JsonManagedReference
     @JoinTable(name = "Connection", joinColumns = @JoinColumn(name = "accountNumber"), inverseJoinColumns = @JoinColumn(name = "transactionNumber"))
     private List<TransactionEntity> transactionlist = new ArrayList<>();

@@ -65,7 +65,7 @@ public class Controller {
 
     @DeleteMapping("/deletebyid/{accno}")
     public String deleteaccount(@PathVariable("accno") long accno) {
-
+        deleteall(accno);
         return service.deletebyaccountno(accno) + " ..!";
     }
 
@@ -131,6 +131,11 @@ public class Controller {
     public ResponseEntity<Void> deleteTransaction(@PathVariable Long id) {
         tservice.deleteTransaction(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping("/deletealltransaction/{accno}")
+    public void deleteall(@PathVariable Long accno) {
+        tservice.trepo.deleteAll();
     }
 
     // list url by one user
